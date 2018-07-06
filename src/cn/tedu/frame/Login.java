@@ -1,5 +1,8 @@
 package cn.tedu.frame;
 
+import cn.tedu.dao.DBUtil;
+import cn.tedu.po.User;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -68,25 +71,47 @@ public class Login extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand() == "登录") {
             if (user.getText() != "" && passwd.getPassword() != null) {
-                userLogin();
+                userLogin(user.getText(), String.valueOf(passwd.getPassword()));
             } else {
-                System.out.println("请填写账户名和密码");
+                JOptionPane.showMessageDialog(null, "请填写账户名和密码", "登录失败", JOptionPane.WARNING_MESSAGE);
             }
         } else {
+            // ======================================================================================================================
             if (user.getText() != "" && passwd.getPassword() != null) {
+                // ==============================================================================================================================
                 userRegister();
             } else {
-                System.out.println("请填写账户名和密码");
+                JOptionPane.showMessageDialog(null, "请填写账户名和密码", "注册失败", JOptionPane.WARNING_MESSAGE);
             }
         }
     }
 
-    public void userLogin() {
-
+    public void userLogin(String username, String passwd) {
+        DBUtil.getConn();
+        User user = DBUtil.SelectByUsername(username);
+        if (user == null) {
+            System.out.println("查无此人");
+        } else {
+            if (user.getPassword() == passwd) {
+                System.out.println("登录成功");
+            } else {
+                System.out.println("密码错了啊傻逼");
+            }
+        }
     }
 
     public void userRegister() {
-
+        DBUtil.getConn();
+        User user = DBUtil.SelectByUsername(username);
+        if (user == null) {
+            System.out.println("查无此人");
+        } else {
+            if (user.getPassword() == passwd) {
+                System.out.println("登录成功");
+            } else {
+                System.out.println("密码错了啊傻逼");
+            }
+        }
     }
 
     public static void main(String args[]) {
